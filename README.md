@@ -18,7 +18,7 @@ graph TD
     D --> E(Container: math-service-container)
     E --> F(Python FastAPI Application)
 
-    subgraph AWS EKS Cluster (Managed by eksctl)
+    subgraph "AWS EKS Cluster (Managed by eksctl)"
         direction LR
         G[EKS Control Plane] --- H(Worker Nodes - EC2 Instances)
         H --> I(Kubernetes API Server)
