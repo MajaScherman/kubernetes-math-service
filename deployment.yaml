@@ -1,0 +1,38 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: math-service-deployment
+  labels:
+    app: math-service
+spec:
+  replicas: 1 # Start with 1 replica, HPA will scale it up later
+  selector:
+    matchLabels:
+      app: math-service
+  template:
+    metadata:
+      labels:
+        app: math-service
+    spec:
+      containers:
+      - name: math-service-container
+        # image: my-math-service # 1. For local usage, use the name of the docker image you built locally
+        # 2. When you move to the cloud, use the link to the image in ECR here.
+        image: 040296723817.dkr.ecr.eu-west-2.amazonaws.com/my-math-service:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PORT
+          value: "8000"
+        - name: LOGLEVEL
+          value: "INFO"
+        resources:
+          requests:
+            cpu: "1"        # Request 1 CPU core
+            memory: "2Gi"   # Request 2 GiB of memory
+          # It's good practice to also define limits, e.g.:
+          limits:
+            cpu: "2"
+            memory: "4Gi"

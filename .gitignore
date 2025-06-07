@@ -1,0 +1,54 @@
+# macOS
+.DS_Store
+.localized
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.bak
+*.swp
+*.swo
+*.tmp
+.pytest_cache/
+.mypy_cache/
+.tox/
+.coverage
+.coverage.*
+.ipynb_checkpoints
+.ruff_cache/ # For Ruff linter
+.uv/ # uv's temporary environments/caches
+
+# Environment variables
+.env
+.flaskenv
+.vscode/
+.idea/
+
+# Docker
+*.log
+*.log.*
+tmp/
+.dockerignore
+!Dockerfile # Don't ignore the Dockerfile itself
+
+# Kubernetes & AWS
+*.kubeconfig # Kubeconfig files
+*.pem # Private keys (if any are generated locally)
+*.key # Private keys (if any are generated locally)
+.terraform/ # Terraform state directory
+*.tfplan # Terraform plan files
+*.tfstate # Terraform state files
+*.tfstate.backup # Terraform state backup files
