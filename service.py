@@ -49,6 +49,10 @@ class AddRequest(BaseModel):
 class AddResponse(BaseModel):
     result: float
 
+@app.get("/healthz") # New health check endpoint
+async def health_check():
+    return {"status": "ok"}
+
 @app.post("/", response_model=AddResponse)
 async def add_numbers(request: AddRequest):
     logger.info("Received addition request", a=request.a, b=request.b)

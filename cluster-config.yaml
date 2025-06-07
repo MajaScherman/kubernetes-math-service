@@ -1,20 +1,17 @@
 # cluster-config.yaml
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
-
 metadata:
-  name: math-service-cluster # Name of your EKS cluster
-  region: eu-west-2 # Choose your AWS region (e.g., eu-west-2)
-
-nodeGroups:
-  - name: math-service-ng # Name of the node group
-    instanceType: t3.medium # Or t3.large, depending on your region's availability/cost.
-                            # Make sure it can handle 1 CPU & 2GiB per pod, and at least 2 nodes.
-    desiredCapacity: 2      # Start with 2 worker nodes
-    minSize: 1
-    maxSize: 3              # Allow for scaling up nodes if needed, though HPA scales pods.
-    # Associate a public IP to instances if they are in public subnets (default for eksctl)
-    # If using private subnets, you might need more advanced networking setup.
-    # ssh:
-    #   allow: true
-    #   publicKeyPath: ~/.ssh/id_rsa.pub # Optional: if you want SSH access to nodes
+  name: math-service-cluster
+  region: eu-west-2
+  version: "1.29" # Ensure this matches your desired K8s version
+managedNodeGroups:
+- name: standard-workers
+  instanceType: t3.large # CHANGED FROM t3.medium
+  desiredCapacity: 2
+  minSize: 2
+  maxSize: 3
+  volumeSize: 20
+  labels: {role: worker}
+  tags:
+    nodegroup-type: standard

@@ -3,11 +3,24 @@ apiVersion: v1
 kind: Service
 metadata:
   name: math-service-service
+  annotations:
+    # Health Check Protocol (default is TCP, use HTTP for your FastAPI service)
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: http
+    # Health Check Path (your service listens on '/', so use that)
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /healthz
+    # The time to wait for a health check response (in seconds). Must be > your 5s sleep.
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "6" # Or "7" for more buffer
+    # The number of consecutive failed health checks before a target is considered unhealthy.
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "5"
+    # The number of consecutive successful health checks required for a target to be considered healthy.
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "3"
+    # The interval between health checks (in seconds). More frequent checks can react faster.
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "10"
 spec:
   selector:
-    app: math-service # Selects pods with the label 'app: math-service'
+    app: math-service
   ports:
     - protocol: TCP
-      port: 80        # The port the service will expose (e.g., LoadBalancer listens on 80)
-      targetPort: 8000 # The port the container is listening on
-  type: LoadBalancer    # This will provision an AWS Load Balancer
+      port: 80 # The port the Load Balancer listens on
+      targetPort: 8000 # The port your container listens on
+  type: LoadBalancer
