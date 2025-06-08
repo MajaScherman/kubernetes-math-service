@@ -555,9 +555,6 @@ Here are some common challenges you might encounter during deployment and testin
 * **`exec /usr/local/bin/uv: exec format error` (in pod logs):**
     * **Reason:** The `uv` executable included in your Docker image is compiled for a different CPU architecture than your EKS worker nodes (e.g., an ARM64 `uv` binary is trying to run on an x86_64 node, common if building on an Apple M-series Mac).
     * **Solution:** Rebuild your Docker image specifically for the correct target architecture using `docker buildx build --platform linux/amd64 ...`.
-* **`/bin/sh: uv: command not found` (in pod logs):**
-    * **Reason:** The `uv` executable was not found in the container's `PATH` environment variable at runtime.
-    * **Solution:** Ensure your `Dockerfile` includes `ENV PATH="/root/.local/bin:$PATH"` after `pipx install uv`.
 * **Pods stuck in `Pending`:**
     * **Reason:** No nodes have enough available CPU or memory (based on `requests` in `deployment.yaml`) to schedule the pod, or there are no nodes in the cluster at all.
     * **Solution:**
@@ -617,4 +614,3 @@ eksctl scale nodegroup \
         --region eu-west-2
     ```
     * **Important:** If you use this method, you might need to re-apply your `deployment.yaml`, `service.yaml`, and `hpa.yaml` again once the nodes are back up, especially if pods failed to reschedule or the Load Balancer IP changed due to AWS internal mechanisms.
-```
